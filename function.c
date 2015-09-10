@@ -10,12 +10,15 @@ ui2s (unsigned int num, char *buff, unsigned int bsize, unsigned int base)
       buff[0] = 0;
       return 0;
     }
-  for (j = num, i = 0; j > 0 && i < bsize; i++)
+
+  j = num, i = 0;
+  do
     {
       k = j % base;
       j /= base;
-      buff[i] = ((base == 16) && (k > 9)) ? k + 'A' - 10 : k + '0';
+      buff[i++] = ((base == 16) && (k > 9)) ? k + 'A' - 10 : k + '0';
     }
+  while (j > 0 && i < bsize);
   l = i;
 
   buff[i] = 0;

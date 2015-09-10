@@ -35,7 +35,7 @@ int
 main (int argc, char *argv[])
 {
   FILE *in, *out;
-  unsigned int ch, i, j, base;
+  unsigned int ch, i, j, base, syn;
   static char instr[1024], outstr[1024];
 /******************* Parameters **********************/
 
@@ -69,7 +69,7 @@ main (int argc, char *argv[])
   ui2s (base, suffix + 1, BSIZE - 1, 10);
 
 /******************* Parameters **********************/
-  for (; j < argc; j++)
+  for (syn = 0; j < argc; j++)
     {
       strcpy (instr, argv[j]);
       strcpy (outstr, argv[j]);
@@ -77,6 +77,8 @@ main (int argc, char *argv[])
 
       if (!(in = fopen (instr, "rb")))
 	{
+	  fprintf (stderr, "FILE: %s\n\n", instr);
+	  syn = 1;
 	  showErr (errstr, e_input);
 	  continue;
 	}
@@ -84,10 +86,13 @@ main (int argc, char *argv[])
       if (!(out = fopen (outstr, "wb")))
 	{
 	  showErr (errstr, e_output);
+	  fprintf (stderr, "FILE: %s\n\n", outstr);
 	  fclose (in);
+	  syn = 1;
 	  continue;
 	}
       i = 0;
+      syn = 0;
       while ((ch = fgetc (in)) != EOF)
 	{
 	  ui2s (ch, buff, BSIZE, base);
@@ -99,8 +104,11 @@ main (int argc, char *argv[])
 	    }
 
 	}
-      fclose (in);
-      fclose (out);
+      if (!syn)
+	{
+	  fclose (in);
+	  fclose (out);
+	}
     }
   return 0;
 }
