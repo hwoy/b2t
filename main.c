@@ -77,9 +77,9 @@ main (int argc, char *argv[])
 
       if (!(in = fopen (instr, "rb")))
 	{
+	  showErr (errstr, e_input);
 	  fprintf (stderr, "FILE: %s\n\n", instr);
 	  syn = 1;
-	  showErr (errstr, e_input);
 	  continue;
 	}
 
