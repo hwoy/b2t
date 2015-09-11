@@ -3,8 +3,8 @@
 #include "function.h"
 
 #define BSIZE 64
-#define COL 16
-#define BASE 10
+#define COLS 16
+#define BASE 16
 #define DELIM ','
 
 void showErr (const char *errstr[], int errNO);
@@ -19,8 +19,8 @@ static const char *errstr[] =
   { "Parameters is not match", "Input file is not found",
   "Can not assign an output file", "Base number must not be zero"
 };
-static const char *param[] = { "-b" };
-static const char *pdetail[] = { "base Number" };
+static const char *param[] = { "-b", "-c" };
+static const char *pdetail[] = { "base Number", "cols" };
 
 enum __errNO
 {
@@ -28,14 +28,14 @@ enum __errNO
 };
 enum __param
 {
-  e_base
+  e_base, e_cols
 };
 
 int
 main (int argc, char *argv[])
 {
   FILE *in, *out;
-  unsigned int ch, i, j, base, syn;
+  unsigned int ch, i, j, base, syn, cols;
   static char instr[1024], outstr[1024];
 /******************* Parameters **********************/
 
@@ -50,12 +50,12 @@ main (int argc, char *argv[])
   j = 1;
   if (!strncmp (argv[1], param[e_base], sLen (param[e_base])))
     {
-      if (!isUint (argv[1] + 2))
+      if (!isUint (argv[1] + sLen (param[e_base])))
 	{
 	  showErr (errstr, e_param);
 	  return showHelp (argv[0], param, pdetail, 0);
 	}
-      base = s2ui (argv[1] + 2);
+      base = s2ui (argv[1] + sLen (param[e_base]));
       j = 2;
     }
 
@@ -67,6 +67,18 @@ main (int argc, char *argv[])
 
   suffix[0] = '.';
   ui2s (base, suffix + 1, BSIZE - 1, 10);
+
+  cols = COLS;
+  if ((argc >= 3) && !strncmp (argv[2], param[e_cols], sLen (param[e_cols])))
+    {
+      if (!isUint (argv[2] + sLen (param[e_cols])))
+	{
+	  showErr (errstr, e_param);
+	  return showHelp (argv[0], param, pdetail, 0);
+	}
+      cols = s2ui (argv[2] + sLen (param[e_cols]));
+      j = 3;
+    }
 
 /******************* Parameters **********************/
   for (syn = 0; j < argc; j++)
@@ -97,7 +109,8 @@ main (int argc, char *argv[])
 	{
 	  ui2s (ch, buff, BSIZE, base);
 	  fprintf (out, "%s%c", buff, DELIM);
-	  if (++i > COL - 1)
+
+	  if ((cols) && (++i > cols - 1))
 	    {
 	      fprintf (out, "\n");
 	      i = 0;
@@ -122,9 +135,10 @@ showErr (const char *errstr[], int errNO)
 int
 showHelp (char *path, const char *param[], const char *pdetail[], int ret)
 {
-  fprintf (stderr, "\nUSAGE: %s {%sN} file1 file2 ...\n",
-	   path + basename (path), param[e_base]);
+  fprintf (stderr, "\nUSAGE: %s {%sN} {%sN} file1 file2 ...\n",
+	   path + basename (path), param[e_base], param[e_cols]);
   fprintf (stderr, "%s = %s\n", param[e_base], pdetail[e_base]);
+  fprintf (stderr, "%s = %s\n", param[e_cols], pdetail[e_cols]);
 
   return ret;
 }
