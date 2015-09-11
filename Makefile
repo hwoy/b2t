@@ -6,12 +6,14 @@ CFLAGS =  -O2  -ansi -Wpedantic -Wall -Werror
 
 all:	$(bin)
 
-$(bin):	main.o function.o
-	$(cc) -o $(bin) main.o function.o
+$(bin):	main.o function.o opt.o
+	$(cc) -o $(bin) main.o function.o opt.o
 main.o:
 	$(cc) -c -o main.o $(CFLAGS) main.c
 function.o:
 	$(cc) -c -o function.o $(CFLAGS) function.c
+opt.o:
+	$(cc) -c -o opt.o $(CFLAGS) opt.c
 clean:
-	rm -rf main.o function.o $(bin) *~
+	rm -rf *.o $(bin) *~
 
