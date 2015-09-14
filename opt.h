@@ -8,6 +8,6 @@ enum __opt__
 int opt_action (int argc, const char *argv[], const char *param[], char *buff,
 		unsigned int bsize, int start);
 
-int opt_getindex (void);
+int opt_getIndex (void);
 
-void opt_setindex (int index);
+void opt_setIndex (int index);

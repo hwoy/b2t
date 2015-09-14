@@ -1,7 +1,7 @@
 #include <string.h>
 #include "opt.h"
 
-static int upindex = -1;
+static int i_upindex = -1;
 
 int
 opt_action (int argc, const char *argv[], const char *param[], char *buff,
@@ -12,7 +12,7 @@ opt_action (int argc, const char *argv[], const char *param[], char *buff,
   buff[0] = 0;
 
 
-  for (j = (upindex >= 0) ? upindex : start; j < argc; j++)
+  for (j = (i_upindex >= 0) ? i_upindex : start; j < argc; j++)
     {
 
       for (i = 0; param[i]; i++)
@@ -26,7 +26,7 @@ opt_action (int argc, const char *argv[], const char *param[], char *buff,
 		  buff[k] = argv[j][l];
 		}
 	      buff[k] = 0;
-	      upindex = j + 1;
+	      i_upindex = j + 1;
 	      return i;
 	    }
 	}
@@ -36,7 +36,7 @@ opt_action (int argc, const char *argv[], const char *param[], char *buff,
 	  buff[k] = argv[j][l];
 	}
       buff[k] = 0;
-      upindex = j + 1;
+      i_upindex = j + 1;
       return e_optother;
 
 
@@ -46,13 +46,13 @@ opt_action (int argc, const char *argv[], const char *param[], char *buff,
 }
 
 int
-opt_getindex (void)
+opt_getIndex (void)
 {
-  return upindex;
+  return i_upindex;
 }
 
 void
-opt_setindex (int index)
+opt_setIndex (int index)
 {
-  upindex = index;
+  i_upindex = index;
 }
