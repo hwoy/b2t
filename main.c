@@ -57,7 +57,7 @@ main (int argc, const char *argv[])
 	      return showHelp (argv[0], param, pdetail, 1);
 	    }
 	  strcpy (suffix + 1, buff);
-	  base = s2ui (buff);
+	  base = s2ui (buff,10);
 
 	  if (base == 0 || (base > 10 && base != 16))
 	    {
@@ -73,7 +73,7 @@ main (int argc, const char *argv[])
 	      showErr (errstr, e_param);
 	      return showHelp (argv[0], param, pdetail, 1);
 	    }
-	  cols = s2ui (buff);
+	  cols = s2ui (buff,10);
 	  break;
 	case e_help:
 	  return showHelp (argv[0], param, pdetail, 1);
