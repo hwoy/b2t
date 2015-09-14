@@ -44,7 +44,7 @@ main (int argc, const char *argv[])
   base = BASE;
   cols = COLS;
   suffix[0] = '.';
-  ui2s (base, suffix + 1, SSIZE - 1, 10);
+  ui2s (base, suffix + 1, SSIZE - 1, 10,0);
   while ((parm =
 	  opt_action (argc, argv, param, buff, BSIZE, DSTART)) != e_optend)
     {
@@ -104,7 +104,7 @@ main (int argc, const char *argv[])
 	  syn = 0;
 	  while ((ch = fgetc (in)) != EOF)
 	    {
-	      ui2s (ch, buff, BSIZE, base);
+	      ui2s (ch, buff, BSIZE, base,0);
 	      fprintf (out, "%s%c", buff, DELIM);
 
 	      if ((cols) && (++i > cols - 1))

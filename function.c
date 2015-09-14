@@ -1,7 +1,8 @@
 #include "function.h"
 
 unsigned int
-ui2s (unsigned int num, char *buff, unsigned int bsize, unsigned int base)
+ui2s (unsigned int num, char *buff, unsigned int bsize, unsigned int base,
+      unsigned int len)
 {
   unsigned int i, j, k, l;
   char chb, che;
@@ -19,8 +20,13 @@ ui2s (unsigned int num, char *buff, unsigned int bsize, unsigned int base)
       buff[i++] = ((base == 16) && (k > 9)) ? k + 'A' - 10 : k + '0';
     }
   while (j > 0 && i < bsize);
-  l = i;
 
+  for (; i < len; i++)
+    {
+      buff[i] = '0';
+    }
+
+  l = i;
   buff[i] = 0;
 
 
